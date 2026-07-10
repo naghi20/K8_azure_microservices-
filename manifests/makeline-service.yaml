@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: makeline-service
+  name: makeline-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: makeline-service
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: makeline-service
+    spec:
+      containers:
+      - env:
+        - name: ORDER_QUEUE_URI
+          value: amqp://rabbitmq:5672
+        - name: ORDER_QUEUE_USERNAME
+          value: username
+        - name: ORDER_QUEUE_PASSWORD
+          value: password
+        - name: ORDER_QUEUE_NAME
+          value: orders
+        - name: ORDER_DB_URI
+          value: mongodb://documentdb:10260/?tls=true&tlsAllowInvalidCertificates=true
+        - name: ORDER_DB_NAME
+          value: orderdb
+        - name: ORDER_DB_COLLECTION_NAME
+          value: orders
+        - name: ORDER_DB_USERNAME
+          value: username
+        - name: ORDER_DB_PASSWORD
+          value: password
+        image: ghcr.io/azure-samples/aks-store-demo/makeline-service:2.2.0
+        name: makeline-service
+        ports:
+        - containerPort: 3001
+        resources: {}
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: makeline-service
+  name: makeline-service
+spec:
+  ports:
+  - name: 3001-3001
+    port: 3001
+    protocol: TCP
+    targetPort: 3001
+  selector:
+    app: makeline-service
+  type: ClusterIP
+status:
+  loadBalancer: {}

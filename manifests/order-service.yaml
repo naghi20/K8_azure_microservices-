@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: order-service
+  name: order-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-service
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: order-service
+    spec:
+      containers:
+      - env:
+        - name: ORDER_QUEUE_HOSTNAME
+          value: rabbitmq
+        - name: ORDER_QUEUE_PORT
+          value: "5672"
+        - name: ORDER_QUEUE_USERNAME
+          value: username
+        - name: ORDER_QUEUE_PASSWORD
+          value: password
+        - name: ORDER_QUEUE_NAME
+          value: orders
+        image: ghcr.io/azure-samples/aks-store-demo/order-service:2.2.0
+        name: order-service
+        ports:
+        - containerPort: 3000
+        resources: {}
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: order-service
+  name: order-service
+spec:
+  ports:
+  - name: 3000-3000
+    port: 3000
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: order-service
+  type: ClusterIP
+status:
+  loadBalancer: {}

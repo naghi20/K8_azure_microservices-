@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: product-service
+  name: product-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product-service
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: product-service
+    spec:
+      containers:
+      - env:
+        - name: AI_SERVICE_URL
+          value: http://ai-service:5001/
+        image: ghcr.io/azure-samples/aks-store-demo/product-service:2.2.0
+        name: product-service
+        ports:
+        - containerPort: 3002
+        resources: {}
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: product-service
+  name: product-service
+spec:
+  ports:
+  - name: 3002-3002
+    port: 3002
+    protocol: TCP
+    targetPort: 3002
+  selector:
+    app: product-service
+  type: ClusterIP
+status:
+  loadBalancer: {}

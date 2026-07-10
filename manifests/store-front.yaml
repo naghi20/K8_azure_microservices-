@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: store-front
+  name: store-front
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: store-front
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: store-front
+    spec:
+      containers:
+      - image: ghcr.io/azure-samples/aks-store-demo/store-front:2.2.0
+        name: store-front
+        ports:
+        - containerPort: 8080
+        resources: {}
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: store-front
+  name: store-front
+spec:
+  ports:
+  - name: 80-8080
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: store-front
+  type: LoadBalancer
+status:
+  loadBalancer: {}

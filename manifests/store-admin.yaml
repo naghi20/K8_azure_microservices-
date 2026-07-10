@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: store-admin
+  name: store-admin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: store-admin
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: store-admin
+    spec:
+      containers:
+      - image: ghcr.io/azure-samples/aks-store-demo/store-admin:2.2.0
+        name: store-admin
+        ports:
+        - containerPort: 8081
+        resources: {}
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: store-admin
+  name: store-admin
+spec:
+  ports:
+  - name: 80-8081
+    port: 80
+    protocol: TCP
+    targetPort: 8081
+  selector:
+    app: store-admin
+  type: LoadBalancer
+status:
+  loadBalancer: {}

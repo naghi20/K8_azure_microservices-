@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: documentdb
+  name: documentdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: documentdb
+  template:
+    metadata:
+      labels:
+        app: documentdb
+    spec:
+      containers:
+      - image: ghcr.io/documentdb/documentdb/documentdb-local:pg17-0.112.0
+        name: documentdb-local
+        ports:
+        - containerPort: 10260
+        resources: {}
+      enableServiceLinks: false
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: documentdb
+  name: documentdb
+spec:
+  ports:
+  - name: 10260-10260
+    port: 10260
+    protocol: TCP
+    targetPort: 10260
+  selector:
+    app: documentdb
+  type: ClusterIP
+status:
+  loadBalancer: {}
