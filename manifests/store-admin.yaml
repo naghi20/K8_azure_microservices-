@@ -19,7 +19,7 @@ spec:
       - image: ghcr.io/azure-samples/aks-store-demo/store-admin:2.2.0
         name: store-admin
         ports:
-        - containerPort: 8080
+        - containerPort: 8081
         resources: {}
 status: {}
 ---
@@ -31,10 +31,10 @@ metadata:
   name: store-admin
 spec:
   ports:
-  - name: 80-8084
+  - name: 80-8081
     port: 80
     protocol: TCP
-    targetPort: 8084
+    targetPort: 8081
   selector:
     app: store-admin
   type: ClusterIp
