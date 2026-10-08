@@ -19,7 +19,7 @@ spec:
       - image: ghcr.io/azure-samples/aks-store-demo/store-front:2.2.0
         name: store-front
         ports:
-        - containerPort: 8080
+        - containerPort: 8083
         resources: {}
 status: {}
 ---
