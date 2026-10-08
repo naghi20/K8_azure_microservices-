@@ -37,6 +37,6 @@ spec:
     targetPort: 8081
   selector:
     app: store-admin
-  type: ClusterIp
+  type: ClusterIP
 status:
   loadBalancer: {}
