@@ -19,7 +19,7 @@ spec:
       - image: ghcr.io/azure-samples/aks-store-demo/store-admin:2.2.0
         name: store-admin
         ports:
-        - containerPort: 8081
+        - containerPort: 8080
         resources: {}
 status: {}
 ---
