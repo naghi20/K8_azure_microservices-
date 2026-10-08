@@ -31,12 +31,12 @@ metadata:
   name: store-admin
 spec:
   ports:
-  - name: 80-8081
+  - name: 80-8084
     port: 80
     protocol: TCP
-    targetPort: 8081
+    targetPort: 8084
   selector:
     app: store-admin
-  type: LoadBalancer
+  type: ClusterIp
 status:
   loadBalancer: {}
